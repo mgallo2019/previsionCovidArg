@@ -131,7 +131,7 @@ body {
   padding-bottom: 200%;
   }
   .iframe-border {
-  border: 1px solid #000;
+  border: 0px solid #000;
   }
   .center-block-horiz {
   margin-left: auto !important;
@@ -181,6 +181,20 @@ footer p {
   .reco div {
     padding: 1.4rem 1rem;
   }
+
+  .reco .title {
+    padding: 1.4rem 1rem;
+    font-size: 1.5rem;
+  }
+
+  .reco .text{
+    font-size: 1.3rem;
+  }
+
+  #Iframe-Liason-Sheet {
+    padding: 0rem 0rem;
+    }
+  
 }
 
 
