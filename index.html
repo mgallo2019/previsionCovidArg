@@ -9,8 +9,8 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     
     <!-- mas informacion para los buscadores -->
-    <meta name="description" content="Este Sitio es un dashboard NO OFICIAL de Coronavirus en Argentina" />
-    <meta name="author" content="REIKEN" />
+    <meta name="description" content="Este Sitio es un dashboard de Pronosticador de Casos Positivos de Coronavirus en Argentina diariamente" />
+    <meta name="author" content="MIGUEL GALLO" />
     <meta name="keywords" content="coronavirus, covid" />
 
     <!-- Google Fonts -->
@@ -37,8 +37,8 @@
     <header class="header">
       <div class="header-content animated flash delay-2s">
         <h1 class="titlelogo">CORONAVIRUS</h3>
-        <h3 class="title">DASHBOARD DE PREVISION DIARIA</h3> 
-        <p class="text">Este Sitio Provee una Mirada subjetiva desde la probabilidad a la Previsión del COVID-19 en nuestro país</p>
+        <h3 class="title">DASHBOARD DE PREVISIÓN DIARIA</h3> 
+        <p class="text">Este Sitio Provee una Mirada subjetiva desde la probabilidad a la Previsión del COVID-19 en nuestro país a diario</p>
       </div>
     </header>
 
@@ -63,7 +63,7 @@
         </div>
         <div>
           <i class="fas fa-thermometer fa-5x"></i>
-          <h3 class="title">SINTOMAS</h3> 
+          <h3 class="title">SÍNTOMAS</h3> 
           <p class="text">En caso de presentar síntomas, aunque sean leves, consultar inmediatamente al sistema de salud, siguiendo las recomendaciones locales, para saber cómo hacer correctamente la consulta. Ejemplo: 107 en CABA, 148 en Provincia de Buenos Aires, 0800-222-1002 a nivel nacional.</p>
         </div>
       </div>
@@ -71,12 +71,17 @@
 
     <!-- Dashboard -->
     <section class="dashboard bg-light text-center">
-      <h3 class="title">DASHBOARD PROBABILIDADES</h3>   
+      <h3 class="title">DASHBOARD DE PROBABILIDADES</h3>   
+      <p class="text">Los datos se actualizan todos los dias a la noche de acuerdo al comunicado oficial de casos positivos confirmados diarios</p>
+      <p class="text"><u>Fuente:</u> La Probabilidad esta basada en una explicación otorgada por "El Traductor de Ingeniería" en su canal de Youtube, con la importancia de las matemáticas y las ciencias</p>
+      <p class="text">El FACTOR PROBABILISTICO es facil calcularlo, nos basamos en la DIVISIÓN de casos positivos del dia de HOY sobre los casos positivos del dia de AYER, luego se multiplica dicho FACTOR por la cantidad de casos positivos de HOY</p>
       <div id="Iframe-Liason-Sheet" class="iframe-border center-block-horiz">
-        <div class="responsive-wrapper responsive-wrapper-wxh-1000x2000">
+        <div class="responsive-wrapper responsive-wrapper-wxh">
           <script>dinamicSrcIframe();</script>
         </div>
       </div>
+
+      <p class="text">Si a la Probabilidad resultante la multiplicaramos por un valor de FACTOR calculado, varias veces, obtendremos una proyección para varios días posteriores y podemos ver si estamos haciendo las cosas bien o no.</p>
     </section>
 
     <!-- Footer -->
