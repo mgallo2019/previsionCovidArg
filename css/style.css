@@ -95,7 +95,6 @@ body {
 .dashboard{
   padding: 2rem 0;
 }
-
 .bg-light {
   background: #fff;
   color: #333;
@@ -127,7 +126,7 @@ body {
   border: none;
   }
   /* padding-bottom = h/w as a % */
-  .responsive-wrapper-wxh-1000x2000 {
+  .responsive-wrapper-wxh {
   padding-bottom: 200%;
   }
   .iframe-border {
@@ -193,8 +192,13 @@ footer p {
 
   #Iframe-Liason-Sheet {
     padding: 0rem 0rem;
-    }
-  
+   }
+ 
+  .dashboard .text{
+    padding: 1.4rem 1rem;
+    font-size: 1rem;
+  }
+
 }
 
 

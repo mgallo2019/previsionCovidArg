@@ -1,5 +1,5 @@
 /* uRLS DE GOOGLEDOCS */
-const srcWeb = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSQZyiwFzCrp2gZ3RiIyDMh9uCJjtZ0bJydMM3tYVCO_HFgmXvuRtS18YEKj-GfJw/pubhtml?widget=true&amp;headers=false";
+const srcWeb = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTiWtjqEb8TbAnwHkLFHL2uLItKLnfZXSnF7MbAol5icgDe8YeGtU2T7zclZfMUBw/pubhtml?widget=true&amp;headers=false";
 const srcCel = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQj0NY_qnyQAMUouBHG913dOAINbf75JXR5S3Eeu3cN9IHujjENeO2WdrvUv60g0w/pubhtml?widget=true&amp;headers=false";
 
 let screen = window.matchMedia("(max-width: 560px)")
