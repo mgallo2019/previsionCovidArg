@@ -100,10 +100,10 @@ body {
 
 #Iframe-Liason-Sheet {
   max-width: 1150px;
-  max-height: 2200px;
-  overflow: hidden;
+  /*max-height: 3500px;*/
+  overflow: hidden;/*hidden*/
   margin: auto;
-  padding: 4rem 1rem;
+  padding: 2rem 1rem;
   }
 
   /* inner wrapper: make responsive */
@@ -125,7 +125,7 @@ body {
   }
   /* padding-bottom = h/w as a % */
   .responsive-wrapper-wxh {
-  padding-bottom: 200%;
+    padding-bottom: 350%;
   }
   .iframe-border {
   border: 0px solid #000;
@@ -136,7 +136,6 @@ body {
   }
 /*fin Dashboard*/
 
-
 /*inicio pie*/
 footer {
   padding: 2.2rem;
@@ -146,6 +145,7 @@ footer p {
   margin: 0;
 }
 /*fin footer*/
+
 
 /* RESPONSIVE */
 @media (max-width: 560px) {
@@ -209,4 +209,3 @@ footer p {
     top: 0;
   }
 }
-
