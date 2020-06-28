@@ -100,8 +100,8 @@ body {
 
 #Iframe-Liason-Sheet {
   max-width: 1150px;
-  /*max-height: 3500px;*/
-  overflow: hidden;/*hidden*/
+  max-height: 3550px; /*aumenta de a 100 x cada 5 filas*/
+  overflow: hidden;
   margin: auto;
   padding: 2rem 1rem;
   }
@@ -125,7 +125,7 @@ body {
   }
   /* padding-bottom = h/w as a % */
   .responsive-wrapper-wxh {
-    padding-bottom: 350%;
+    padding-bottom: 320%; /*aumenta de a 10 x cada 5 filas*/
   }
   .iframe-border {
   border: 0px solid #000;
