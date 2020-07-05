@@ -134,7 +134,76 @@ body {
   margin-left: auto !important;
   margin-right: auto !important;
   }
-/*fin Dashboard*/
+
+
+/*centrar en div*/
+.centerTable{
+  text-align: center;
+}
+
+.centerTable table {
+ margin: 0 auto;
+ border: 1px solid #000;
+ table-layout: fixed;
+ border-collapse: collapse;
+ font-size: 12px;
+}
+
+th, td {
+  padding: 5px;
+  border: 1px solid black;
+}
+
+th {
+  letter-spacing: 2px;
+}
+
+td {
+  letter-spacing: 1px;
+  vertical-align: middle;
+}
+
+thead td {
+  text-align: center;
+}
+
+tbody td {
+  text-align: left;
+}
+
+tfoot th {
+  text-align: center;
+}
+
+caption {
+  font-family: 'Rock Salt', cursive;
+  padding: 20px;
+  font-style: italic;
+  caption-side: top;
+  color: #666;
+  text-align: left;
+  letter-spacing: 1px;
+}
+
+
+tbody tr:nth-child(odd) {
+  background-color: white;
+}
+
+tbody tr:nth-child(even) {
+  background-color: white;
+}
+
+tbody tr {
+  background-color: white;
+}
+
+table {
+  background-color: rgb(194, 183, 183);
+}
+
+
+ /*fin Dashboard*/
 
 /*inicio pie*/
 footer {
@@ -144,7 +213,15 @@ footer {
 footer p {
   margin: 0;
 }
+
+.subir{
+  text-decoration: none;
+  color: black;
+  display: block;
+  float: right;
+}
 /*fin footer*/
+
 
 
 /* RESPONSIVE */
