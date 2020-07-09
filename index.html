@@ -23,6 +23,8 @@
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/1e9f5b8697.js" crossorigin="anonymous"></script>
 
+    <!-- CSS tabla plugin -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 
@@ -31,6 +33,8 @@
      <!-- Plug Moment -->
      <script src="app/moment.min.js"></script>
      <script src="app/moment-with-locales.min.js"></script>
+    <!-- CSS tabla plugin -->
+    <script src="app/jquery.dataTables.min.js"></script>
     <!-- change dinamic parameters -->
     <script src="app/app.js"></script>
 
@@ -80,15 +84,12 @@
       <p class="text">Los datos se actualizan todos los dias a la noche de acuerdo al comunicado oficial de casos positivos confirmados diarios</p>
       <p class="text"><u>Fuente:</u> La Probabilidad esta basada en una explicación otorgada por "El Traductor de Ingeniería" en su canal de Youtube, con la importancia de las matemáticas y las ciencias</p>
       <p class="text">El FACTOR PROBABILISTICO es facil calcularlo, nos basamos en la DIVISIÓN de casos positivos del dia de HOY sobre los casos positivos del dia de AYER, luego se multiplica dicho FACTOR por la cantidad de casos positivos de HOY</p>
-      <!-- <div id="Iframe-Liason-Sheet" class="iframe-border center-block-horiz">
-        <div id="tablegraphics" class="responsive-wrapper responsive-wrapper-wxh">
-        
-        </div>
-      </div>   -->
-      
-      <div id="tblDinamica" class="centerTable" style="overflow-x:auto;">
 
-        <table id="" summary="Tabla de Probabilidades">
+      <div id="loading" style="display:none;">CONSULTANDO DATOS COVIDDDDDDDDDDDDDDDDDDDDDDDDDDDDD !!! 19</div>
+
+      <div id="tblDinamica" class="centerTable" style="overflow-x:auto; display:none">
+
+        <table id="tablaProb" summary="Tabla de Probabilidades" class="display compact row-border stripe cell-border order-column"> 
           <caption>Evolución COVID-19 ARGENTINA: Analisis</caption>
           <thead>
             <tr>
@@ -108,6 +109,7 @@
             </tr>
           </tfoot>
         </table>
+
       </div>
     
     <p class="text">Si a la Probabilidad resultante la multiplicaramos por un valor de FACTOR calculado, varias veces, obtendremos una proyección para varios días posteriores y podemos ver si estamos haciendo las cosas bien o no.</p>
