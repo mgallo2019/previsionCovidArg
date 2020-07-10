@@ -18,7 +18,7 @@ $(document).ready(function()
     //este es para la 1ra vez...
     $( document ).ajaxStart(function() {
         $("#loading").show();
-        console.log("garlopa chota");
+       
       });
 
     //comienzo API
@@ -69,8 +69,7 @@ $(document).ready(function()
                     console.log("Enviando!");
                 },//que haga algo antes que se envie
 
-                complete: function () {
-                    $("#loading").hide();
+                complete: function () {                
                     console.log("Complete!");
                 },
 
@@ -91,21 +90,51 @@ $(document).ready(function()
 
             //llegue al ultimo? muestro tabla
             if (lotesProcess == cantLotes){
+
+                //escondo el msge de carga
+                $("#loading").hide();
+        
+
                  //tiene que llamarse luego de llenada la tabla
                 $('#tablaProb').DataTable(
                     {
                         responsive: true,
                         "language": {
-                            "lengthMenu": "Mostrando _MENU_ Registros Por Página",
-                            "zeroRecords": "No hay registros",
-                            "info": "Mostrando página _PAGE_ de _PAGES_",
-                            "infoEmpty": "No registros disponibles",
-                            "infoFiltered": "(filtrado desde _MAX_ total de registros)",
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            },
+                            "buttons": {
+                                "copy": "Copiar",
+                                "colvis": "Visibilidad"
+                            }
+
                         },
+
                         "pagingType": "full_numbers",
                         "pageLength": 50
                     }
-                );//uso de plugin
+                ).page('last').draw('page');;//uso de plugin apuntando a la ultima pagina!
+                
+                
                 $("#tblDinamica").show();
             }
         });
@@ -131,9 +160,6 @@ $(document).ready(function()
                                     );
 
 
-
-        console.log("NO ESTA TODO EL DATASET EN MEMORIA");
-
         var iteraFin = moment(inicio, 'YYYY-MM-DD').add(loteDias, 'days').format('YYYY-MM-DD');
 
         for (var i = 1; i <= cantLotes; i++){
@@ -149,8 +175,12 @@ $(document).ready(function()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function loadData(objeto){
 
+        //var ultimaFecha;
+        //var previsionMañana = 0;
+
         $.each(objeto, function(fecha, elemento) {
 
+            //ultimaFecha = fecha;
             //la prevision sera cero para el primer dato
             var prevision = 0;
 
@@ -163,35 +193,40 @@ $(document).ready(function()
                 //     elemento1.today_new_deaths,elemento1.today_deaths,
                 //     elemento1.today_new_recovered,elemento1.today_recovered);
 
+                //previsionMañana = Math.round(elemento1.today_new_confirmed * (elemento1.today_confirmed/elemento1.yesterday_confirmed));
+
                 var localLocale = moment(fecha);
                 moment.locale('es');
                 localLocale.locale(false);
-
+            
                 if (elemento1.today_new_confirmed > prevision){
                     var post = `
                         <tr>
-                            <td>${localLocale.format('LL')}</td>
+                            <td><span>${fecha}</span>${localLocale.format('LL')}</td>
                             <td>${elemento1.today_new_confirmed}</td>
                             <td>${elemento1.today_confirmed}</td>
-                            <td>${elemento1.today_confirmed/elemento1.yesterday_confirmed}</td>
-                            <td style="background:rgb(182, 38, 38);">${prevision}</td>
+                            <td>${(elemento1.today_confirmed/elemento1.yesterday_confirmed).toFixed(3)}</td>
+                            <td style="background:rgb(182, 38, 38);color:white;">${prevision}</td>
                         </tr>
                     `;
                 }
                 else{
                     var post = `
                         <tr>
-                            <td>${localLocale.format('LL')}</td>
+                            <td><span>${fecha}</span>${localLocale.format('LL')}</td>
                             <td>${elemento1.today_new_confirmed}</td>
                             <td>${elemento1.today_confirmed}</td>
-                            <td>${elemento1.today_confirmed/elemento1.yesterday_confirmed}</td>
-                            <td style="background:green;">${prevision}</td>
+                            <td>${(elemento1.today_confirmed/elemento1.yesterday_confirmed).toFixed(3)}</td>
+                            <td style="background:green;color:white;">${prevision}</td>
                         </tr>
                     `;
                 }
                 $('#tablaCuerpo').append(post);
-            });
+            });  
         });
+
+        //llegue al ultimo
+        //addFinalRow(moment(ultimaFecha , 'YYYY-MM-DD').add(1, 'days').format('YYYY-MM-DD'),previsionMañana);
     }
 
 
@@ -217,17 +252,26 @@ $(document).ready(function()
     }
 
 
+    function addFinalRow(fecha,prevision){
+
+        var localLocale = moment(fecha);
+        moment.locale('es');
+        localLocale.locale(false);
+     
+        var post = `
+            <tr>
+                <td><span>${fecha}</span>${localLocale.format('LL')}</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td style="background:green;color:white;">${prevision}</td>
+            </tr>
+        `;
+        
+        $('#tablaCuerpo').append(post);
+
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-});
+});//FIN CODIGO MAIN
 

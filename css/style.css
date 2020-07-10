@@ -101,44 +101,22 @@ body {
 /*centrar en div*/
  .centerTable{
   margin: auto;
-  width: 75%;
-  padding: 4rem 0;
+  width: 60%;
+  padding: 2rem 0;
  }
 
+ #tablaProb span{
+  display:none;
+}
+
 .centerTable table {
- /* margin: 0 auto;
- border: 1px solid #000;
- table-layout: fixed;
- border-collapse: collapse; */
  font-size: 12px;
-}
-/*
-th, td {
-  padding: 5px;
-  border: 1px solid black;
-}
-
-th {
-  letter-spacing: 2px;
-}
-
-td {
-  letter-spacing: 1px;
-  vertical-align: middle;
-}
-
-thead td {
-  text-align: center;
-}
-
-tbody td {
-  text-align: left;
 }
 
 tfoot th {
-  text-align: center;
+  text-align: right;
 }
-*/
+
 caption {
   font-family: 'Rock Salt', cursive;
   padding: 20px;
@@ -148,23 +126,10 @@ caption {
   text-align: left;
   letter-spacing: 1px;
 }
-/*
-tbody tr:nth-child(odd) {
-  background-color: white;
-}
-
-tbody tr:nth-child(even) {
-  background-color: white;
-}
-
-tbody tr {
-  background-color: white;
-}
 
 table {
   background-color: rgb(194, 183, 183);
-} */
-
+}
  /*fin Dashboard*/
 
 /*inicio pie*/
@@ -183,8 +148,6 @@ footer p {
   float: right;
 }
 /*fin footer*/
-
-
 
 /* RESPONSIVE */
 @media (max-width: 560px) {
@@ -236,6 +199,9 @@ footer p {
     font-size: 1rem;
   }
 
+  .centerTable{
+    width: 99%;
+   }
 }
 
 

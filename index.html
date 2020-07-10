@@ -24,18 +24,18 @@
     <script src="https://kit.fontawesome.com/1e9f5b8697.js" crossorigin="anonymous"></script>
 
     <!-- CSS tabla plugin -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css"/>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
     <!-- Load Jquery -->
     <script src="app/jquery-3.5.1.min.js"></script>
-     <!-- Plug Moment -->
-     <script src="app/moment.min.js"></script>
-     <script src="app/moment-with-locales.min.js"></script>
+    <!-- Plug Moment -->
+    <script src="app/moment.min.js"></script>
+    <script src="app/moment-with-locales.min.js"></script>
     <!-- CSS tabla plugin -->
-    <script src="app/jquery.dataTables.min.js"></script>
-    <!-- change dinamic parameters -->
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
+    <!-- appMain -->
     <script src="app/app.js"></script>
 
     <title>Dashboad Coronavirus en Argentina</title>
@@ -85,7 +85,10 @@
       <p class="text"><u>Fuente:</u> La Probabilidad esta basada en una explicación otorgada por "El Traductor de Ingeniería" en su canal de Youtube, con la importancia de las matemáticas y las ciencias</p>
       <p class="text">El FACTOR PROBABILISTICO es facil calcularlo, nos basamos en la DIVISIÓN de casos positivos del dia de HOY sobre los casos positivos del dia de AYER, luego se multiplica dicho FACTOR por la cantidad de casos positivos de HOY</p>
 
-      <div id="loading" style="display:none;">CONSULTANDO DATOS COVIDDDDDDDDDDDDDDDDDDDDDDDDDDDDD !!! 19</div>
+      <div id="loading" style="display:none;">
+        <p><img src="img/loading.gif" width="5%" height="5%"/></p>
+        <p>Cargando Datos, Aguarde unos instantes...</p>
+      </div>
 
       <div id="tblDinamica" class="centerTable" style="overflow-x:auto; display:none">
 
