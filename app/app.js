@@ -5,7 +5,6 @@ $(document).ready(function()
     console.log("Documento LISTO!");
 
     //Declaracion de Variables GLobales especiales
-    var lotesProcess = 0;//variable para sincronizacion de lotes y mostrado de elementos
     let screen = window.matchMedia("(max-width: 560px)"); //variable que es usada para determinar el UMBRAL de cambio de RESOLUCION
     let targetScreen = 0;
     var cacheData = [];
@@ -23,8 +22,9 @@ $(document).ready(function()
        
       });
 
-    //comienzo API
-    GetDataDays();
+    
+    getDataRepoCSV();
+
 
     //////////////////////////////////////////////////////////////////FUNCTIONS SPACE//////////////////////////////////////////////////////////////////////////////////
 
@@ -51,141 +51,72 @@ $(document).ready(function()
             }, 500);
             return false;
         });
-      }
+    }
 
 
-    function getDataRest(inicio, fin, lote, cantLotes){
+    /*****************************************************************************/ 
+    function getDataRepoCSV(){
 
-        //https://api.covid19tracking.narrativa.com/api/country/argentina?date_from=2020-03-20&date_to=2020-03-22
-        //https://api.covid19tracking.narrativa.com/api/2020-06-22/country/argentina
-        var rest = "https://api.covid19tracking.narrativa.com/api/country/argentina?date_from="+inicio+"&date_to="+fin;
-        var result;
+        var csv = "repoData/listado.csv";
+ 
+        $.ajax({
+            type: "GET",
+            url: csv,
+            dataType: "text",
 
-        $.when(
-            $.ajax({
-                type: "GET",
-                url: rest,
+            beforeSend: function (response) {
+                console.log("Enviando!");
+            },//que haga algo antes que se envie
 
-                beforeSend: function (response) {
-                    console.log("Enviando!");
-                },//que haga algo antes que se envie
+            success: function (response) {
+                console.log("TERMINO UN REQUEST:");
+                cacheData = $.csv.toObjects(response);//CSV to JSON
+                requestComplete();
+            },
 
-                success: function (response) {
-                    console.log("TERMINO UN REQUEST:" + lote);
-                    result = response.dates;
-                },
-
-                error: function (response) {
-                    console.log("OCURRIO UN ERROR");
-                    console.log("No se ha podido obtener la información");
-                    requestsError = true;
-                    console.log(response);
-                },
-            })
-        ).then(function() {      
-            
-            loadJsonData(result);
-            
-            lotesProcess = lotesProcess+1;
-
-            //llegue al ultimo? muestro tabla
-            if (lotesProcess == cantLotes){
-                //todos los request fueron OK?
-                if(!requestsError){
-                    requestComplete();
-                }
-                else{
-                    requestError();
-                }    
-            }
+            error: function (response) {
+                console.log("OCURRIO UN ERROR");
+                console.log("No se ha podido obtener la información");
+                console.log(response);
+                requestError();
+            },
         });
     }
 
 
-    function GetDataDays(){
 
-        const loteDias = 5;//de a lotes de 5 dias funciono ok la api
-        const PrimerDia = "2020-03-20";
-
-        var inicio = moment(PrimerDia).format('YYYY-MM-DD');//segun api es el inicio de los datos
-        var fin = moment().format('YYYY-MM-DD');//dia actual
-        //calculo la cantidad de lotes a procesar
-        var cantLotes = Math.round(
-                                    (
-                                    Math.abs(
-                                            moment(inicio, 'YYYY-MM-DD').startOf('day').diff(moment(fin, 'YYYY-MM-DD').startOf('day'), 'days')
-                                            )
-                                        + 1
-                                    )
-                                        / loteDias
-                                    );
-
-
-        var iteraFin = moment(inicio, 'YYYY-MM-DD').add(loteDias, 'days').format('YYYY-MM-DD');
-
-        for (var i = 1; i <= cantLotes; i++){
-            console.log(inicio, iteraFin);
-            //llamo a la rest
-            getDataRest(inicio, iteraFin, i, cantLotes);
-            inicio = moment(iteraFin).add(1, 'days').format('YYYY-MM-DD');//hay que quitar el ultimo dia inclusivo del between
-            iteraFin = moment(iteraFin , 'YYYY-MM-DD').add(loteDias, 'days').format('YYYY-MM-DD');
-        }
-    }
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //se guardara los datos del request en un cache para luego tener los datos correlativos y ordenados
-    function loadJsonData(objeto){
-
-        $.each(objeto, function(fecha, elemento) {
-
-            $.each(elemento.countries, function(index, elemento1) {
-                //lleno array 
-                cacheData.push(
-                    {
-                        dia: fecha,
-                        infectadosNuevos: elemento1.today_new_confirmed,
-                        infectadosAlDia: elemento1.today_confirmed,
-                        infectadosAlDiaAyer: elemento1.yesterday_confirmed,
-                        muertesNuevos:  elemento1.today_new_deaths,
-                        muertesAlDia: elemento1.today_deaths,
-                        recuperadosNuevos: elemento1.today_new_recovered,
-                        recuperadosAlDia: elemento1.today_recovered
-                    }
-                );                
-            });  
-        });
-    }
-
-    function custom_sort(a, b) {
-        return new Date(a.dia).getTime() - new Date(b.dia).getTime();
-    }
-    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
     function prepareData(objeto){
 
-        var ultimoDia;
         var previsionMañana = 0;
+        var datosDiaAnterior = null;
+        var prevision = 0;
+        var factor = 0;
 
         objeto.forEach((item, index) => {
 
             //la prevision sera cero para el primer dato
-            var prevision = calculatePrevisionLastDay(objeto, item.dia); //obtengo los datos del dia anterior
-      
-            //busco el ultimo dato
-            ultimoDia = item.dia;
-            previsionMañana = Math.round(item.infectadosNuevos * (item.infectadosAlDia/item.infectadosAlDiaAyer));
+            if (datosDiaAnterior != null){
+                prevision = Math.round(datosDiaAnterior.CasosNuevos * factor);
+            }
+            else{
+                datosDiaAnterior = item; //correra una sola ves para tener el dato la primera corrida
+            }
 
-            var localLocale = moment(item.dia);
+            factor = (item.CasosAcumulado/datosDiaAnterior.CasosAcumulado);
+
+            var localLocale = moment(item.Fecha);
             moment.locale('es');
             localLocale.locale(false);
         
-            if (item.infectadosNuevos > prevision){
+
+            if (item.CasosNuevos > prevision){
                 var post = `
                     <tr>
-                        <td><span>${item.dia}</span>${localLocale.format('LL')}</td>
-                        <td>${item.infectadosNuevos}</td>
-                        <td>${item.infectadosAlDia}</td>
-                        <td>${(item.infectadosAlDia/item.infectadosAlDiaAyer).toFixed(3)}</td>
+                        <td><span>${item.Fecha}</span>${localLocale.format('LL')}</td>
+                        <td>${item.CasosNuevos}</td>
+                        <td>${item.CasosAcumulado}</td>
+                        <td>${factor.toFixed(3)}</td>
                         <td style="background:rgb(182, 38, 38);color:white;">${prevision}</td>
                     </tr>
                 `;
@@ -193,37 +124,27 @@ $(document).ready(function()
             else{
                 var post = `
                     <tr>
-                        <td><span>${item.dia}</span>${localLocale.format('LL')}</td>
-                        <td>${item.infectadosNuevos}</td>
-                        <td>${item.infectadosAlDia}</td>
-                        <td>${(item.infectadosAlDia/item.infectadosAlDiaAyer).toFixed(3)}</td>
+                        <td><span>${item.Fecha}</span>${localLocale.format('LL')}</td>
+                        <td>${item.CasosNuevos}</td>
+                        <td>${item.CasosAcumulado}</td>
+                        <td>${factor.toFixed(3)}</td>
                         <td style="background:green;color:white;">${prevision}</td>
                     </tr>
                 `;
             }
             $('#tablaCuerpo').append(post);
+
+
+            //guardo el dato del dia actual que sera ayer en la proxima corrida
+            datosDiaAnterior = item;
+        
+            //busco el ultimo dato usando los datos de hoy y los de ayer
+            previsionMañana = Math.round(item.CasosNuevos * factor);
         });
+
 
         //llegue al ultimo
-        addFinalRow(moment(ultimoDia , 'YYYY-MM-DD').add(1, 'days').format('YYYY-MM-DD'),previsionMañana);
-    }
-
-
-    /*calcular la prevision*/
-    function calculatePrevisionLastDay(objeto, fechaHoy){
-
-        var datosAyer = 0;
-
-        objeto.forEach((item, index) => {
-            var hoy = moment(item.dia).format('YYYY-MM-DD');
-            var ayer = moment(fechaHoy).subtract(1, 'd').format('YYYY-MM-DD');
-
-            if (hoy == ayer){             
-                datosAyer = Math.round(item.infectadosNuevos * (item.infectadosAlDia/item.infectadosAlDiaAyer));
-            }
-        });
-
-        return datosAyer;
+        addFinalRow(moment(datosDiaAnterior.Fecha , 'YYYY-MM-DD').add(1, 'days').format('YYYY-MM-DD'),previsionMañana);
     }
 
 
@@ -249,14 +170,10 @@ $(document).ready(function()
 
     function requestComplete(){
 
-        //ordeno el lote de datos
-        cacheData.sort(custom_sort);
-
         //carga datos tabla
         prepareData(cacheData);
         //prepara los graficos
-        loadCanvas();
-
+        loadCanvas(cacheData);
 
         //escondo el msge de carga
         $("#loading").hide();

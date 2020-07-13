@@ -130,11 +130,16 @@ caption {
 table {
   background-color: rgb(194, 183, 183);
 }
+
+.grafico{
+  height: 370px;
+  margin-bottom: 50px;
+}
  /*fin Dashboard*/
 
 /*inicio pie*/
 footer {
-  padding: 2.2rem;
+  padding: 1.2rem;
 }
 
 footer p {

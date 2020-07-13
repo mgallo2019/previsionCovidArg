@@ -33,6 +33,9 @@
     <!-- Plug Moment -->
     <script src="app/moment.min.js"></script>
     <script src="app/moment-with-locales.min.js"></script>
+
+    <script type="text/javascript" src="app/jquery.csv.js"></script>
+
     <!-- CSS tabla plugin -->
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
 
@@ -95,7 +98,7 @@
       <div id="tblDinamica" class="centerTable" style="overflow-x:auto; display:none">
 
         <table id="tablaProb" summary="Tabla de Probabilidades" class="display compact row-border stripe cell-border order-column"> 
-          <caption>Evolución COVID-19 ARGENTINA: Analisis</caption>
+          <caption>Evolución COVID-19 ARGENTINA: Análisis</caption>
           <thead>
             <tr>
               <th scope="col">Día</th>
@@ -109,8 +112,8 @@
           </tbody>
           <tfoot>
             <tr>
-              <th scope="row" colspan="2">ApiRest - Narrativa & AppliedXL</th>
-              <td colspan="3">Datos del Ministerio de Salud Argentina</td>
+              <th scope="row" colspan="2">Datos Oficiales Obtenidos de:</th>
+              <td colspan="3">Ministerio de Salud Argentina</td>
             </tr>
           </tfoot>
         </table>
@@ -118,11 +121,11 @@
       </div>
 
 
-      <div id="chartContainer" style="height: 370px; width: 100%;">
+      <div id="chartContainer" class="grafico centerTable">
       
       </div>
     
-    <p class="text">Si a la Probabilidad resultante la multiplicaramos por un valor de FACTOR calculado, varias veces, obtendremos una proyección para varios días posteriores y podemos ver si estamos haciendo las cosas bien o no.</p>
+      <p class="text">Si a la Probabilidad resultante la multiplicaramos por un valor de FACTOR calculado, varias veces, obtendremos una proyección para varios días posteriores y podemos ver si estamos haciendo las cosas bien o no.</p>
     
     </section>
 
