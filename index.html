@@ -13,9 +13,12 @@
     <meta name="author" content="MIGUEL GALLO" />
     <meta name="keywords" content="coronavirus, covid" />
 
+    <link rel="shortcut icon" href="/img/favicon.png">
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <!-- ANIMATE.CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css">
@@ -25,8 +28,6 @@
 
     <!-- CSS tabla plugin -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css"/>
-    <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="css/style.css">
 
     <!-- Load Jquery -->
     <script src="app/jquery-3.5.1.min.js"></script>
@@ -34,12 +35,16 @@
     <script src="app/moment.min.js"></script>
     <script src="app/moment-with-locales.min.js"></script>
 
+    <!-- CSV -->
     <script type="text/javascript" src="app/jquery.csv.js"></script>
 
     <!-- CSS tabla plugin -->
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
-
     <script src="app/canvasjs.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
     <!-- appMain -->
     <script src="app/app.js"></script>
 
@@ -120,8 +125,11 @@
 
       </div>
 
+      <div id="chartInfAlDia" class="grafico centerTable" style="display:none">
+      
+      </div>
 
-      <div id="chartContainer" class="grafico centerTable">
+      <div id="chartInfxDia" class="grafico centerTable" style="display:none">
       
       </div>
     
@@ -132,8 +140,9 @@
     <!-- Footer -->
     <footer class="footer text-center bg-light">
       <p>MGALLO Web &copy; 2020 - All rights reserved</p>
-
-      <a href="#" id="scroll" class="subir"> Ir arriba...</a>
+      <button id="scroll" title="Go to top">
+        <i class="material-icons">arrow_upward</i>
+      </button> 
     </footer>
 
   </body>

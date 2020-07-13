@@ -8,28 +8,27 @@ $(document).ready(function()
     let screen = window.matchMedia("(max-width: 560px)"); //variable que es usada para determinar el UMBRAL de cambio de RESOLUCION
     let targetScreen = 0;
     var cacheData = [];
-    var requestsError = false;
+    var chart = [];//para poder redenrizar globalmente los graficos, porque inician en HIDE (ver ducumentacion)
 
+
+    window.onscroll = function() {scrollFunction()};
     scroll();
 
     detectScreen(screen) // Call listener function at run time
     screen.addListener(detectScreen) // Attach listener function on state changes
 
-
-    //este es para la 1ra vez...
+    //muestro div con gif de carga
     $( document ).ajaxStart(function() {
         $("#loading").show();
-       
-      });
+    });
 
-    
+
     getDataRepoCSV();
-
 
     //////////////////////////////////////////////////////////////////FUNCTIONS SPACE//////////////////////////////////////////////////////////////////////////////////
 
     /* funcion para dejar un flag sobre que pantalla estoy trabajando, cambiara con el cambio ya que hay un listener */
-    function detectScreen(x) {
+    function detectScreen(x){
         if (x.matches) { // If media query matches
             console.log("phone format");
             targetScreen = 1;
@@ -40,7 +39,16 @@ $(document).ready(function()
         }
     }
 
+    function scrollFunction(){
 
+        var mybutton = $('#scroll');
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+          mybutton.show();
+        } else {
+          mybutton.hide();
+        }
+    }
+      
     function scroll(){
         $('#scroll').click(function(e){
 
@@ -53,11 +61,29 @@ $(document).ready(function()
         });
     }
 
+    function addFinalRow(fecha,prevision){
 
-    /*****************************************************************************/ 
+        var localLocale = moment(fecha);
+        moment.locale('es');
+        localLocale.locale(false);
+     
+        var post = `
+            <tr>
+                <td><span>${fecha}</span>${localLocale.format('LL')}</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td style="background:green;color:white;font-weight: bold;">${prevision}</td>
+            </tr>
+        `;
+        
+        $('#tablaCuerpo').append(post);
+    }
+
+    //////////////////////////////////////////////MANAGEMENT CSV///////////////////////////////////////////////////////////////
     function getDataRepoCSV(){
 
-        var csv = "repoData/listado.csv";
+        var csv = "repoData/listado.csv";//ruta FTP
  
         $.ajax({
             type: "GET",
@@ -65,28 +91,34 @@ $(document).ready(function()
             dataType: "text",
 
             beforeSend: function (response) {
-                console.log("Enviando!");
+                console.log("Enviando REQUEST!");
             },//que haga algo antes que se envie
 
             success: function (response) {
                 console.log("TERMINO UN REQUEST:");
-                cacheData = $.csv.toObjects(response);//CSV to JSON
-                requestComplete();
+                launchProcess(response);  
             },
 
             error: function (response) {
-                console.log("OCURRIO UN ERROR");
-                console.log("No se ha podido obtener la información");
+                console.log("OCURRIO UN ERROR, No se ha podido obtener la información");
                 console.log(response);
-                requestError();
+                requestErrorCSV();
             },
         });
     }
+    
+    function launchProcess(response){
 
+        //emulo que tarda, porque el CSV lo hace rapido y asi muestra la animacion
+        setTimeout( () => {
+                            
+            cacheData = $.csv.toObjects(response);//CSV to JSON
+            requestCompleteCSV();
 
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
-    function prepareData(objeto){
+        } , 3000); 
+    }
+    
+    function prepareDataCSV(objeto){
 
         var previsionMañana = 0;
         var datosDiaAnterior = null;
@@ -147,38 +179,14 @@ $(document).ready(function()
         addFinalRow(moment(datosDiaAnterior.Fecha , 'YYYY-MM-DD').add(1, 'days').format('YYYY-MM-DD'),previsionMañana);
     }
 
-
-    function addFinalRow(fecha,prevision){
-
-        var localLocale = moment(fecha);
-        moment.locale('es');
-        localLocale.locale(false);
-     
-        var post = `
-            <tr>
-                <td><span>${fecha}</span>${localLocale.format('LL')}</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td style="background:green;color:white;font-weight: bold;">${prevision}</td>
-            </tr>
-        `;
-        
-        $('#tablaCuerpo').append(post);
-    }
-
-
-    function requestComplete(){
+    function requestCompleteCSV(){
 
         //carga datos tabla
-        prepareData(cacheData);
-        //prepara los graficos
-        loadCanvas(cacheData);
-
+        prepareDataCSV(cacheData);
+      
         //escondo el msge de carga
         $("#loading").hide();
-
-
+        
          //tiene que llamarse luego de llenada la tabla
         $('#tablaProb').DataTable(
             {
@@ -219,11 +227,23 @@ $(document).ready(function()
         ).page('last').draw('page');;//uso de plugin apuntando a la ultima pagina!
         
         
-        $("#tblDinamica").show();
+        $("#tblDinamica").slideUp(300).fadeIn(400); //.show() alternative
+
+        //prepara los graficos
+        chartInfAlDia(cacheData);
+        chartInfxDia(cacheData);
+
+    
+        $("#chartInfAlDia").show();
+        $("#chartInfxDia").show();
+       
+        chart[1].render(); 
+        chart[0].render();  //si el GRAFICO inicia hide, hay que redendirar ANTES! sino luego hay que renderizar con un loop 
+         
         
     }
 
-    function requestError(){
+    function requestErrorCSV(){
 
         //escondo el msge de carga
         $("#loading").hide();
@@ -238,37 +258,95 @@ $(document).ready(function()
         $("#lastP").append(post);
     }
 
+    ///////////////////////////////////////////////GRAFICOS///////////////////////////////////////////////////////////////////
+    function chartInfxDia(objeto) {
 
-    function loadCanvas() {
+        var datos = chartInfxDiacreateJsonGraphics(objeto);
 
-        var chart = new CanvasJS.Chart("chartContainer", {
+        CanvasJS.addColorSet("rojo",["#c4391c"]);
+
+        chart[0] = new CanvasJS.Chart("chartInfxDia", {
             animationEnabled: true,
-            theme: "light2", // "light1", "light2", "dark1", "dark2"
+            colorSet: "rojo",
             title:{
-                text: "Top Oil Reserves"
+                text: "Total de Infectados x día en ARGENTINA"
             },
             axisY: {
-                title: "Reserves(MMbbl)"
+                title: "Infectados Por Día",
+                gridThickness: 1,
+                gridColor: "#e0e0e0"
             },
             data: [{        
                 type: "column",  
                 showInLegend: true, 
                 legendMarkerColor: "grey",
-                legendText: "MMbbl = one million barrels",
-                dataPoints: [      
-                    { y: 300878, label: "Venezuela" },
-                    { y: 266455,  label: "Saudi" },
-                    { y: 169709,  label: "Canada" },
-                    { y: 158400,  label: "Iran" },
-                    { y: 142503,  label: "Iraq" },
-                    { y: 101500, label: "Kuwait" },
-                    { y: 97800,  label: "UAE" },
-                    { y: 80000,  label: "Russia" }
-                ]
+                legendText: "Día",
+                dataPoints: datos
             }]
         });
-        chart.render();
-        
+        chart[0].render();  //si el GRAFICO inicia hide, hay que redendirar ANTES! o LUEGO
+    }
+
+    function chartInfAlDia(objeto) {
+
+        var datos = chartInfAlDiacreateJsonGraphics(objeto);
+
+        CanvasJS.addColorSet("azul",["#2d3dd4"]);
+
+        chart[1] = new CanvasJS.Chart("chartInfAlDia", {
+            animationEnabled: true,
+            colorSet: "azul",
+            title:{
+                text: "Total de Infectados al día en ARGENTINA"
+            },
+            axisY: {
+                title: "Total al Día",
+                gridThickness: 1,
+                gridColor: "#e0e0e0"
+            },
+            data: [{        
+                type: "line",  
+                showInLegend: true, 
+                legendMarkerColor: "grey",
+                legendText: "Día",
+                dataPoints: datos
+            }]
+        });
+        chart[1].render();  
+    }
+
+    function chartInfxDiacreateJsonGraphics (objeto){
+
+        var datos = [];
+
+        objeto.forEach((item, index) => {
+
+            datos.push(
+                {
+                    y: parseInt(item.CasosNuevos), //tener en cuenta que deben ser NROs no string
+                    label: item.Fecha,
+                }
+            );      
+        });
+
+        return datos;
+    }
+
+    function chartInfAlDiacreateJsonGraphics (objeto){
+
+        var datos = [];
+
+        objeto.forEach((item, index) => {
+
+            datos.push(
+                {
+                    y: parseInt(item.CasosAcumulado), //tener en cuenta que deben ser NROs no string
+                    label: item.Fecha,
+                }
+            );      
+        });
+
+        return datos;
     }
 
 });//FIN CODIGO MAIN
