@@ -13,9 +13,12 @@
     <meta name="author" content="MIGUEL GALLO" />
     <meta name="keywords" content="coronavirus, covid" />
 
+    <link rel="shortcut icon" href="/img/favicon.png">
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <!-- ANIMATE.CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css">
@@ -23,10 +26,26 @@
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/1e9f5b8697.js" crossorigin="anonymous"></script>
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <!-- CSS tabla plugin -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css"/>
 
-    <!-- change dinamic parameters -->
+    <!-- Load Jquery -->
+    <script src="app/jquery-3.5.1.min.js"></script>
+    <!-- Plug Moment -->
+    <script src="app/moment.min.js"></script>
+    <script src="app/moment-with-locales.min.js"></script>
+
+    <!-- CSV -->
+    <script type="text/javascript" src="app/jquery.csv.js"></script>
+
+    <!-- CSS tabla plugin -->
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
+    <script src="app/canvasjs.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!-- appMain -->
     <script src="app/app.js"></script>
 
     <title>Dashboad Coronavirus en Argentina</title>
@@ -74,18 +93,56 @@
       <h3 class="title">DASHBOARD DE PROBABILIDADES</h3>   
       <p class="text">Los datos se actualizan todos los dias a la noche de acuerdo al comunicado oficial de casos positivos confirmados diarios</p>
       <p class="text"><u>Fuente:</u> La Probabilidad esta basada en una explicación otorgada por "El Traductor de Ingeniería" en su canal de Youtube, con la importancia de las matemáticas y las ciencias</p>
-      <p class="text">El FACTOR PROBABILISTICO es facil calcularlo, nos basamos en la DIVISIÓN de casos positivos del dia de HOY sobre los casos positivos del dia de AYER, luego se multiplica dicho FACTOR por la cantidad de casos positivos de HOY</p>
-      <div id="Iframe-Liason-Sheet" class="iframe-border center-block-horiz">
-        <div id="tablegraphics" class="responsive-wrapper responsive-wrapper-wxh">
-        
-        </div>
-      </div>  
+      <p id="lastP" class="text">El FACTOR PROBABILISTICO es facil calcularlo, nos basamos en la DIVISIÓN de casos positivos del dia de HOY sobre los casos positivos del dia de AYER, luego se multiplica dicho FACTOR por la cantidad de casos positivos de HOY</p>
+
+      <div id="loading" style="display:none;">
+        <p><img src="img/loading.gif" width="5%" height="5%"/></p>
+        <p>Cargando Datos, Aguarde unos instantes...</p>
+      </div>
+
+      <div id="tblDinamica" class="centerTable" style="overflow-x:auto; display:none">
+
+        <table id="tablaProb" summary="Tabla de Probabilidades" class="display compact row-border stripe cell-border order-column"> 
+          <caption>Evolución COVID-19 ARGENTINA: Análisis</caption>
+          <thead>
+            <tr>
+              <th scope="col">Día</th>
+              <th scope="col">Infectados por Día</th>
+              <th scope="col">Total Al Día</th>
+              <th scope="col">FACTOR (hoy/ayer)</th>
+              <th scope="col">Probabilidad de Infectados</th>
+            </tr>
+          </thead>
+          <tbody id="tablaCuerpo"> 
+          </tbody>
+          <tfoot>
+            <tr>
+              <th scope="row" colspan="2">Datos Oficiales Obtenidos de:</th>
+              <td colspan="3">Ministerio de Salud Argentina</td>
+            </tr>
+          </tfoot>
+        </table>
+
+      </div>
+
+      <div id="chartInfAlDia" class="grafico centerTable" style="display:none">
+      
+      </div>
+
+      <div id="chartInfxDia" class="grafico centerTable" style="display:none">
+      
+      </div>
+    
       <p class="text">Si a la Probabilidad resultante la multiplicaramos por un valor de FACTOR calculado, varias veces, obtendremos una proyección para varios días posteriores y podemos ver si estamos haciendo las cosas bien o no.</p>
+    
     </section>
 
     <!-- Footer -->
     <footer class="footer text-center bg-light">
       <p>MGALLO Web &copy; 2020 - All rights reserved</p>
+      <button id="scroll" title="Go to top">
+        <i class="material-icons">arrow_upward</i>
+      </button> 
     </footer>
 
   </body>
