@@ -83,8 +83,8 @@ $(document).ready(function()
     //////////////////////////////////////////////MANAGEMENT CSV///////////////////////////////////////////////////////////////
     function getDataRepoCSV(){
 
-        var csv = "repoData/listado.csv";//ruta FTP
- 
+        var csv = '../repoData/listado.csv';//ruta FTP
+        
         $.ajax({
             type: "GET",
             url: csv,
