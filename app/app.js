@@ -5,17 +5,11 @@ $(document).ready(function()
     console.log("Documento LISTO!");
 
     //Declaracion de Variables GLobales especiales
-    let screen = window.matchMedia("(max-width: 560px)"); //variable que es usada para determinar el UMBRAL de cambio de RESOLUCION
-    let targetScreen = 0;
     var cacheData = [];
     var chart = [];//para poder redenrizar globalmente los graficos, porque inician en HIDE (ver ducumentacion)
 
-
     window.onscroll = function() {scrollFunction()};
     scroll();
-
-    detectScreen(screen) // Call listener function at run time
-    screen.addListener(detectScreen) // Attach listener function on state changes
 
     //muestro div con gif de carga
     $( document ).ajaxStart(function() {
@@ -26,19 +20,6 @@ $(document).ready(function()
     getData();
     
     //////////////////////////////////////////////////////////////////FUNCTIONS SPACE//////////////////////////////////////////////////////////////////////////////////
-
-    /* funcion para dejar un flag sobre que pantalla estoy trabajando, cambiara con el cambio ya que hay un listener */
-    function detectScreen(x){
-        if (x.matches) { // If media query matches
-            console.log("phone format");
-            targetScreen = 1;
-        }
-        else {
-            console.log("web format");
-            targetScreen = 2;
-        }
-    }
-
     function scrollFunction(){
 
         var mybutton = $('#scroll');

@@ -103,6 +103,7 @@ body {
   margin: auto;
   width: 60%;
   padding: 2rem 0;
+  display: block;
  }
 
  #tablaProb span{
@@ -118,7 +119,7 @@ tfoot th {
 }
 
 caption {
-  font-family: 'Rock Salt', cursive;
+  font-family: 'arial', cursive;
   padding: 20px;
   font-style: italic;
   caption-side: top;
@@ -220,7 +221,7 @@ footer p {
   }
 
   .centerTable{
-    width: 99%;
+    width: 95%;
    }
 
    #scroll {
