@@ -160,6 +160,7 @@ footer p {
   padding: 12px; /* Some padding size*/
   border-radius: 10px; /* Rounded corners */
   font-size: 10px; /* Increase font size */
+  opacity: 0.7;
 }
 
 #scroll:hover {
@@ -221,6 +222,12 @@ footer p {
   .centerTable{
     width: 99%;
    }
+
+   #scroll {
+    right: 5px; /* Place the button 30px from the right */
+    padding: 4px; /* Some padding size*/
+    font-size: 6px; /* Increase font size */
+  }
 }
 
 
