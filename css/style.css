@@ -103,7 +103,7 @@ body {
   margin: auto;
   width: 60%;
   padding: 2rem 0;
-  display: block;
+  display:none
  }
 
  #tablaProb span{
@@ -119,7 +119,7 @@ tfoot th {
 }
 
 caption {
-  font-family: 'arial', cursive;
+  font-family: 'Open Sans', cursive;
   padding: 20px;
   font-style: italic;
   caption-side: top;
@@ -136,6 +136,21 @@ table {
   height: 370px;
   margin-bottom: 50px;
 }
+
+.details-control{
+  width: 1%; 
+  height: 1%;
+}
+
+td.details-control {
+  background: url('../img/details_open.png') no-repeat center center;
+  cursor: pointer;
+}
+tr.shown td.details-control {
+  background: url('../img/details_close.png') no-repeat center center;
+}
+
+
  /*fin Dashboard*/
 
 /*inicio pie*/
@@ -223,6 +238,15 @@ footer p {
   .centerTable{
     width: 95%;
    }
+
+  .centerTable table {
+    font-size: 10px;
+   }
+
+   .details-control{
+    width: 0.1%; 
+    height: 0.1%;
+  }
 
    #scroll {
     right: 5px; /* Place the button 30px from the right */
