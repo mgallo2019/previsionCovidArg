@@ -7,6 +7,7 @@ $(document).ready(function()
     //Declaracion de Variables GLobales especiales
     var cacheData = [];
     var chart = [];//para poder redenrizar globalmente los graficos, porque inician en HIDE (ver ducumentacion)
+    var table = null;
 
     window.onscroll = function() {scrollFunction()};
     scroll();
@@ -49,12 +50,13 @@ $(document).ready(function()
         localLocale.locale(false);
      
         var post = `
-            <tr>
+            <tr> 
+                <td class='details-control'></td>     
                 <td><span>${fecha}</span>${localLocale.format('LL')}</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td style="background:green;color:white;font-weight: bold;">${prevision}</td>
+                <td style="background:green;color:white;font-weight: bold;">${prevision}</td>          
             </tr>
         `;
         
@@ -1361,23 +1363,25 @@ $(document).ready(function()
 
             if (item.CasosNuevos > prevision){
                 var post = `
-                    <tr>
+                    <tr>             
+                        <td class='details-control'></td>     
                         <td><span>${item.Fecha}</span>${localLocale.format('LL')}</td>
                         <td>${item.CasosNuevos}</td>
                         <td>${item.CasosAcumulado}</td>
                         <td>${factor.toFixed(3)}</td>
-                        <td style="background:rgb(182, 38, 38);color:white;">${prevision}</td>
+                        <td style="background:rgb(182, 38, 38);color:white;">${prevision}</td>                         
                     </tr>
                 `;
             }
             else{
                 var post = `
                     <tr>
+                        <td class='details-control'></td>     
                         <td><span>${item.Fecha}</span>${localLocale.format('LL')}</td>
                         <td>${item.CasosNuevos}</td>
                         <td>${item.CasosAcumulado}</td>
                         <td>${factor.toFixed(3)}</td>
-                        <td style="background:green;color:white;">${prevision}</td>
+                        <td style="background:green;color:white;">${prevision}</td>  
                     </tr>
                 `;
             }
@@ -1404,8 +1408,8 @@ $(document).ready(function()
         //escondo el msge de carga
         $("#loading").hide();
         
-         //tiene que llamarse luego de llenada la tabla
-        $('#tablaProb').DataTable(
+        //tiene que llamarse luego de llenada la tabla
+        table = $('#tablaProb').DataTable(
             {
                 responsive: true,
                 "language": {
@@ -1437,12 +1441,15 @@ $(document).ready(function()
                     }
 
                 },
+                
+                "order": [[1, 'asc']],
 
                 "pagingType": "full_numbers",
                 "pageLength": 50
             }
         ).page('last').draw('page');;//uso de plugin apuntando a la ultima pagina!
         
+        addTroggleTbl();
         
         $("#tblDinamica").slideUp(300).fadeIn(400); //.show() alternative
 
@@ -1455,9 +1462,7 @@ $(document).ready(function()
         $("#chartInfxDia").show();
        
         chart[1].render(); 
-        chart[0].render();  //si el GRAFICO inicia hide, hay que redendirar ANTES! sino luego hay que renderizar con un loop 
-         
-        
+        chart[0].render();  //si el GRAFICO inicia hide, hay que redendirar ANTES! sino luego hay que renderizar con un loop    
     }
 
     function requestError(){
@@ -1473,6 +1478,82 @@ $(document).ready(function()
         `;
 
         $("#lastP").append(post);
+    }
+
+    /* Formatting function for row details - modify as you need */
+    function format (d) {
+      // `d` is the original data object for the row
+    
+      var fecha = d[1].substring(d[1].lastIndexOf("<span>") + 6, d[1].lastIndexOf("</span>"));
+      var datos = getMoreData(fecha);
+ 
+      return '<table cellpadding="5" cellspacing="0" border="0" style="background:white; padding-left:5px; text-align:left;">'+
+          '<tr>'+
+              '<td>Muertes:</td>'+
+              '<td>'+datos[0].MuertesNuevos+'</td>'+
+          '</tr>'+
+          '<tr>'+
+              '<td>Muertes Totales:</td>'+
+              '<td>'+datos[0].MuertesAcumulado+'</td>'+
+          '</tr>'+
+          '<tr>'+
+              '<td>Recuperados:</td>'+
+              '<td>'+datos[0].RecuperadosNuevos+'</td>'+
+          '</tr>'+
+          '<tr>'+
+            '<td>Recuperados Totales:</td>'+
+            '<td>'+datos[0].RecuperadosAcumulado+'</td>'+
+      '</tr>'+
+      '</table>';
+    }
+
+    function getMoreData(fecha){
+
+      var datos = [];
+
+      cacheData.forEach((item, index) => {
+      
+          if (item.Fecha == fecha){
+            datos.push(
+              {
+                  MuertesNuevos: item.MuertesNuevos,                   
+                  MuertesAcumulado: item.MuertesAcumulado,
+                  RecuperadosNuevos: item.RecuperadosNuevos,
+                  RecuperadosAcumulado: item.RecuperadosAcumulado
+              });   
+          }
+      });
+
+      if (datos.length == 0){
+        datos.push(
+          {
+              MuertesNuevos: 0,                   
+              MuertesAcumulado: 0,
+              RecuperadosNuevos: 0,
+              RecuperadosAcumulado: 0
+          });   
+
+      }
+
+      return datos;
+    }
+
+    function addTroggleTbl(){
+      // Add event listener for opening and closing details
+      $('#tablaCuerpo').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+      });
     }
 
     ////////////////////////////////////////////////////GRAFICOS///////////////////////////////////////////////////////////////////

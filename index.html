@@ -100,24 +100,25 @@
         <p>Cargando Datos, Aguarde unos instantes...</p>
       </div>
 
-      <div id="tblDinamica" class="centerTable" style="display:none">
+      <div id="tblDinamica" class="centerTable">
 
-        <table id="tablaProb" summary="Tabla de Probabilidades" class="display compact row-border stripe cell-border order-column"> 
+        <table id="tablaProb" summary="Tabla de Probabilidades" class="display compact row-border stripe cell-border order-column" style="width: 100%;"> 
           <caption>Evolución COVID-19 ARGENTINA: Análisis</caption>
           <thead>
             <tr>
+              <th scope="col"></th>
               <th scope="col">Día</th>
               <th scope="col">Infectados por Día</th>
               <th scope="col">Total Al Día</th>
               <th scope="col">FACTOR (hoy/ayer)</th>
-              <th scope="col">Probabilidad de Infectados</th>
+              <th scope="col">Probabilidad de Infectados</th>       
             </tr>
           </thead>
           <tbody id="tablaCuerpo"> 
           </tbody>
           <tfoot>
             <tr>
-              <th scope="row" colspan="2">Rest by:<a href="https://covid19api.com/">covid19api.com </a></th>
+              <th scope="row" colspan="3">Rest by:<a href="https://covid19api.com/">covid19api.com </a></th>
               <td colspan="3">Con Datos del Ministerio de Salud Argentina</td>
             </tr>
           </tfoot>
@@ -125,11 +126,11 @@
 
       </div>
 
-      <div id="chartInfAlDia" class="grafico centerTable" style="display:none">
+      <div id="chartInfAlDia" class="grafico centerTable">
       
       </div>
 
-      <div id="chartInfxDia" class="grafico centerTable" style="display:none">
+      <div id="chartInfxDia" class="grafico centerTable">
       
       </div>
     
