@@ -82,9 +82,9 @@ body {
   margin: auto;
 }
 
-.grid-4 {
+.grid-x {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); 
+  grid-template-columns: repeat(3, 1fr); 
   grid-gap: 20px;
 }
 /**/
@@ -209,7 +209,7 @@ footer p {
     display: none;
   }
   
-  .grid-4 {
+  .grid-x {
     grid-template-columns: 1fr;
   }
 
@@ -236,21 +236,21 @@ footer p {
   }
 
   .centerTable{
-    width: 95%;
+    width: 100%;
    }
 
   .centerTable table {
     font-size: 10px;
    }
 
-   .details-control{
+  .details-control{
     width: 0.1%; 
     height: 0.1%;
   }
 
-   #scroll {
-    right: 5px; /* Place the button 30px from the right */
-    padding: 4px; /* Some padding size*/
+  #scroll {
+    right: 6px; /* Place the button 30px from the right */
+    padding: 3px; /* Some padding size*/
     font-size: 6px; /* Increase font size */
   }
 }
